@@ -48,5 +48,5 @@ The banking application will be used by tellers in the branch to manage daily cu
 ![image](https://github.com/milkxiii/bankingsimulator/assets/104285627/76795b0a-641d-475a-831b-748af3be0891)
 
 ## Video Demo
-<a href="[https://youtu.be/61K7bjsyuOE](https://www.youtube.com/watch?v=TS-mX3QE4X4)" title="video text"><img src="thumbnail.png"></a>
-
+<a href="https://www.youtube.com/watch?v=TS-mX3QE4X4" title="video text"><img src="thumbnail.png"></a>
+▶️ [https://youtu.be/61K7bjsyuOE](https://www.youtube.com/watch?v=TS-mX3QE4X4)https://www.youtube.com/watch?v=TS-mX3QE4X4
