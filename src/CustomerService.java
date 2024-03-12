@@ -8,7 +8,6 @@ public class CustomerService {
 	public int signUpCustomer(Customer cust, String nameInput, String dobInput, int accTypeValue) {
 		cust.setName(nameInput);
 		cust.setDateOfBirth(dobInput);		
-		System.out.println("Account Type: " + accTypeValue);
 
 		//create account from Customer
 		int id = cust.randomizeID();
@@ -16,9 +15,7 @@ public class CustomerService {
 		try {
 			cust.createCustomer(id, nameInput, accTypeValue, 0, dobInput, registerTime);//
 			pm.saveCustomer(cust);
-			pm.saveAccount(cust.m_account);
-			System.out.println(cust.getID());
-			System.out.println(cust.m_account.getAccountID());
+			pm.saveAccount(cust.account);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -26,10 +23,9 @@ public class CustomerService {
 
 	}
 
-	public boolean logInCustomer(Customer cust, int idInput) {
+	public boolean searchCustomer(Customer cust, int idInput) {
 		boolean userValid = pm.searchCustomer(idInput);
 		if (userValid == true) {
-			System.out.println("Valid ID " + idInput);
 			cust.setID(idInput);
 			cust.setName(pm.getCustName());
 			cust.setDateOfBirth(pm.getCustDOB());

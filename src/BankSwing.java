@@ -5,29 +5,33 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class BankSwing extends JFrame implements ActionListener {
 	CustomerService cs = new CustomerService();
 	Customer cust = new Customer();
 	JPanel panel;
 	JButton goToLogIn, goToSignUpOne, goToViewCustomers, goToStart, goToSignUpTwo, goToSignUpThree, accOptionsOkButton, 
-	goToDepositTwo, logInOkButton, goToAccountOptions, goToWithdrawTwo;
+	goToDepositTwo, logInOkButton, goToAccountOptions, goToWithdrawTwo, goToInterestTwo;
 	JLabel customerNameLabel, customerDOBLabel, depositAmountLabel, customerIDLabel, displayNameID, displayCustNameLabel, displayCustDOBLabel, 
-	displayCustRegTimeLabel, withdrawAmountLabel;
-	JTextField customerName, customerDOB, depositAmount, customerID, displayCustName, displayCustDOB, displayCustRegTime, withdrawAmount;
+	displayCustRegTimeLabel, withdrawAmountLabel, rateLabel, yearsLabel;
+	JTextField customerName, customerDOB, depositAmount, customerID, displayCustName, displayCustDOB, displayCustRegTime, withdrawAmount, rate, years;
 	JRadioButton standardAccButton, vipAccButton, childAccButton, checkBalance, makeDeposit, makeWithdrawal, calcInterest, 
 	prevTransaction, accInfo;
 	ButtonGroup accTypeGroup, optionsGroup;
-	ArrayList<Customer> customerList = new ArrayList<Customer>();
 
+	int scale = 3;
+	
 	public BankSwing() {
 		super("Bank App");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLookAndFeel();
-		setSize(400, 400);
+		setSize(scale*400, scale*330);
 		panel = new JPanel();
+
 	}
 
 	public void startPage() {
@@ -40,22 +44,27 @@ public class BankSwing extends JFrame implements ActionListener {
 		try {
 			myPicture = ImageIO.read(new File("spongebob.jpg"));
 			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-			picLabel.setBounds(130, 40, 150, 105);
+			picLabel.setBounds(scale*130, scale*40, scale*150, scale*105);
 			panel.add(picLabel);
 
 		} catch (IOException e) {
 			System.out.println("no");
 		}
-	    
+
 		goToLogIn = new JButton("Log In");
 		goToSignUpOne= new JButton("Sign Up");
 		goToViewCustomers = new JButton("View Customers");
-		goToLogIn.setBounds(100, 150, 200, 50);
-		goToSignUpOne.setBounds(100, 200, 200, 50);
-		goToViewCustomers.setBounds(100, 250, 200, 50);
+		goToLogIn.setBounds(scale*100, scale*150, scale*200, scale*50);
+		goToSignUpOne.setBounds(scale*100, scale*200, scale*200, scale*50);
+		goToViewCustomers.setBounds(scale*100, scale*250, scale*200, scale*50);
 		goToLogIn.addActionListener(this);
 		goToSignUpOne.addActionListener(this);
 		goToViewCustomers.addActionListener(this);
+		
+		goToLogIn.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToSignUpOne.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToViewCustomers.setFont(new Font("Verdana", Font.PLAIN, 24));
+		
 
 		panel.add(goToLogIn);
 		panel.add(goToSignUpOne);
@@ -94,6 +103,13 @@ public class BankSwing extends JFrame implements ActionListener {
 		goToSignUpTwo = new JButton("Ok");
 		goToStart.addActionListener(this);
 		goToSignUpTwo.addActionListener(this);
+		
+		customerNameLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		customerDOBLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		customerName.setFont(new Font("Verdana", Font.PLAIN, 24));
+		customerDOB.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToStart.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToSignUpTwo.setFont(new Font("Verdana", Font.PLAIN, 24));
 
 		panel.setLayout(gbl);
 		panel.add(customerNameLabel, nameC);
@@ -122,11 +138,11 @@ public class BankSwing extends JFrame implements ActionListener {
 
 		accTypeGroup = new ButtonGroup();
 
-		standardC.gridy = 150;
-		vipC.gridy = 200;
-		childC.gridy = 250;
-		backC.gridy = 300;
-		finishC.gridy = 300;
+		standardC.gridy = scale*150;
+		vipC.gridy = scale*200;
+		childC.gridy = scale*250;
+		backC.gridy = scale*300;
+		finishC.gridy = scale*300;
 		standardC.anchor = GridBagConstraints.LINE_START;
 		vipC.anchor = GridBagConstraints.LINE_START;
 		childC.anchor = GridBagConstraints.LINE_START;
@@ -138,6 +154,12 @@ public class BankSwing extends JFrame implements ActionListener {
 		childAccButton = new JRadioButton("Child Account");
 		goToSignUpOne = new JButton("Back");
 		goToSignUpThree = new JButton("Finish");
+		
+		standardAccButton.setFont(new Font("Verdana", Font.PLAIN, 24));
+		vipAccButton.setFont(new Font("Verdana", Font.PLAIN, 24));
+		childAccButton.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToSignUpOne.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToSignUpThree.setFont(new Font("Verdana", Font.PLAIN, 24));
 
 		accTypeGroup.add(standardAccButton);
 		accTypeGroup.add(vipAccButton);
@@ -169,9 +191,9 @@ public class BankSwing extends JFrame implements ActionListener {
 		GridBagConstraints idC = new GridBagConstraints();
 		GridBagConstraints okC = new GridBagConstraints();
 
-		successC.gridy = 150;
-		idC.gridy = 200;
-		okC.gridy = 250;
+		successC.gridy = scale*150;
+		idC.gridy = scale*200;
+		okC.gridy = scale*250;
 		successC.anchor = GridBagConstraints.CENTER;
 		idC.anchor = GridBagConstraints.CENTER;
 		okC.anchor = GridBagConstraints.CENTER;
@@ -180,7 +202,11 @@ public class BankSwing extends JFrame implements ActionListener {
 		JLabel idLabel = new JLabel("User ID: " + id);
 		goToStart = new JButton("Ok");
 		goToStart.addActionListener(this);
-
+		
+		goToStart.setFont(new Font("Verdana", Font.PLAIN, 24));
+		successLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		idLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		
 		panel.setLayout(gbl);
 		panel.add(successLabel, successC);
 		panel.add(idLabel, idC);
@@ -202,9 +228,9 @@ public class BankSwing extends JFrame implements ActionListener {
 		GridBagConstraints cancelC = new GridBagConstraints();
 		GridBagConstraints okC = new GridBagConstraints();
 
-		idC.gridy = 200;
-		okC.gridy = 250;
-		cancelC.gridy = 250;
+		idC.gridy = scale*200;
+		okC.gridy = scale*250;
+		cancelC.gridy = scale*250;
 		idC.anchor = GridBagConstraints.LINE_START;
 		okC.anchor = GridBagConstraints.CENTER;
 		cancelC.anchor = GridBagConstraints.LINE_START;
@@ -216,6 +242,11 @@ public class BankSwing extends JFrame implements ActionListener {
 		goToStart = new JButton("Back");
 		goToStart.addActionListener(this);
 
+		customerIDLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		customerID.setFont(new Font("Verdana", Font.PLAIN, 24));
+		logInOkButton.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToStart.setFont(new Font("Verdana", Font.PLAIN, 24));
+		
 		panel.setLayout(gbl);
 		panel.add(customerIDLabel, idC);
 		panel.add(customerID, idC);
@@ -225,7 +256,7 @@ public class BankSwing extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
-	public void showAccountOptions(Customer cust) {		
+	public void showAccountOptions(String name, int id) {		
 		super.setTitle("Bank Account Options");
 
 		panel.removeAll();
@@ -244,16 +275,16 @@ public class BankSwing extends JFrame implements ActionListener {
 		GridBagConstraints signOutC = new GridBagConstraints();
 		GridBagConstraints okC = new GridBagConstraints();
 
-		displayNameIDC.gridy = 20;
-		checkBalanceC.gridy = 100;
-		makeDepositC.gridy = 125;
-		makeWithdrawalC.gridy = 150;
-		calcInterestC.gridy = 175;
-		prevTransactionC.gridy = 200;
-		accInfoC.gridy = 225;
-		signOutC.gridy = 275;
-		okC.gridy = 250;
-		signOutC.gridx = 250;
+		displayNameIDC.gridy = scale*20;
+		checkBalanceC.gridy = scale*100;
+		makeDepositC.gridy = scale*125;
+		makeWithdrawalC.gridy = scale*150;
+		calcInterestC.gridy = scale*175;
+		prevTransactionC.gridy = scale*200;
+		accInfoC.gridy = scale*225;
+		signOutC.gridy = scale*275;
+		okC.gridy = scale*250;
+		signOutC.gridx = scale*250;
 		displayNameIDC.anchor = GridBagConstraints.LINE_START;
 		checkBalanceC.anchor = GridBagConstraints.LINE_START;
 		makeDepositC.anchor = GridBagConstraints.LINE_START;
@@ -266,7 +297,7 @@ public class BankSwing extends JFrame implements ActionListener {
 
 		optionsGroup = new ButtonGroup();
 
-		displayNameID = new JLabel(cust.getName() + " " + Integer.toString(cust.getID()));
+		displayNameID = new JLabel(name + " " + Integer.toString(id));
 		checkBalance = new JRadioButton("Check Balance");
 		makeDeposit = new JRadioButton("Deposit");
 		makeWithdrawal = new JRadioButton("Withdraw");
@@ -297,11 +328,21 @@ public class BankSwing extends JFrame implements ActionListener {
 		goToStart.addActionListener(this);
 		accOptionsOkButton.addActionListener(this);
 
+		displayNameID.setFont(new Font("Verdana", Font.PLAIN, 24));
+		checkBalance.setFont(new Font("Verdana", Font.PLAIN, 24));
+		makeDeposit.setFont(new Font("Verdana", Font.PLAIN, 24));
+		makeWithdrawal.setFont(new Font("Verdana", Font.PLAIN, 24));
+		calcInterest.setFont(new Font("Verdana", Font.PLAIN, 24));
+		prevTransaction.setFont(new Font("Verdana", Font.PLAIN, 24));
+		accInfo.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToStart.setFont(new Font("Verdana", Font.PLAIN, 24));
+		accOptionsOkButton.setFont(new Font("Verdana", Font.PLAIN, 24));
+
 		add(panel);
 		setVisible(true);
 	}
 
-	public void showCustomerDetails(Customer cust) {
+	public void showCustomerDetails(String name, String dob, String regTime) {
 		super.setTitle("Customer Details");
 
 		panel.removeAll();
@@ -318,26 +359,29 @@ public class BankSwing extends JFrame implements ActionListener {
 		GridBagConstraints custDetailBackButtonC = new GridBagConstraints();
 		GridBagConstraints proceedButtonC = new GridBagConstraints();
 
-		displayCustNameC.gridy = 150;
-		displayCustDOBC.gridy = 200;
-		displayCustRegTimeC.gridy = 250;
-		displayCustNameLabelC.gridy = 150;
-		displayCustDOBLabelC.gridy = 200;
-		displayCustRegTimeLabelC.gridy = 250;
-		custDetailBackButtonC.gridy = 300;
-		proceedButtonC.gridy = 300;
+		displayCustNameC.gridy = scale*150;
+		displayCustDOBC.gridy = scale*200;
+		displayCustRegTimeC.gridy = scale*250;
+		displayCustNameLabelC.gridy = scale*150;
+		displayCustDOBLabelC.gridy = scale*200;
+		displayCustRegTimeLabelC.gridy = scale*250;
+		custDetailBackButtonC.gridy = scale*300;
+		proceedButtonC.gridy = scale*300;
 		displayCustNameC.anchor = GridBagConstraints.LINE_START;
 		displayCustDOBC.anchor = GridBagConstraints.LINE_START;
 		displayCustRegTimeC.anchor = GridBagConstraints.LINE_START;
 		custDetailBackButtonC.anchor = GridBagConstraints.LINE_START;
+		displayCustNameLabelC.anchor = GridBagConstraints.LINE_START;
+		displayCustDOBLabelC.anchor = GridBagConstraints.LINE_START;
+		displayCustRegTimeLabelC.anchor = GridBagConstraints.LINE_START;
 		proceedButtonC.anchor = GridBagConstraints.LINE_END;
 
 		displayCustNameLabel = new JLabel("Name: ");
 		displayCustDOBLabel = new JLabel("DOB: ");
 		displayCustRegTimeLabel = new JLabel("Register Timestamp: ");
-		displayCustName = new JTextField(cust.getName(), 20);
-		displayCustDOB = new JTextField(cust.getDateOfBirth(), 20);
-		displayCustRegTime = new JTextField(cust.getRegTime(), 20);
+		displayCustName = new JTextField(name, 20);
+		displayCustDOB = new JTextField(dob, 20);
+		displayCustRegTime = new JTextField(regTime, 20);
 		goToLogIn = new JButton("Back");
 		goToAccountOptions = new JButton("Proceed to Activities");
 		goToLogIn.addActionListener(this);
@@ -346,6 +390,15 @@ public class BankSwing extends JFrame implements ActionListener {
 		displayCustName.setEditable(false);
 		displayCustDOB.setEditable(false);
 		displayCustRegTime.setEditable(false);
+
+		displayCustNameLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		displayCustDOBLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		displayCustRegTimeLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		displayCustName.setFont(new Font("Verdana", Font.PLAIN, 24));
+		displayCustDOB.setFont(new Font("Verdana", Font.PLAIN, 24));
+		displayCustRegTime.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToLogIn.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToAccountOptions.setFont(new Font("Verdana", Font.PLAIN, 24));
 
 		panel.setLayout(gbl);
 		panel.add(displayCustNameLabel, displayCustNameLabelC);
@@ -361,6 +414,115 @@ public class BankSwing extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
+	public void showAccountInfo(String name, String dob, String regTime) {
+		super.setTitle("Account Info");
+
+		panel.removeAll();
+		panel.repaint();
+		panel.revalidate();
+
+		GridBagLayout gbl = new GridBagLayout();
+		GridBagConstraints displayCustNameC = new GridBagConstraints();
+		GridBagConstraints displayCustDOBC = new GridBagConstraints();
+		GridBagConstraints displayCustRegTimeC = new GridBagConstraints();
+		GridBagConstraints displayCustNameLabelC = new GridBagConstraints();
+		GridBagConstraints displayCustDOBLabelC = new GridBagConstraints();
+		GridBagConstraints displayCustRegTimeLabelC = new GridBagConstraints();
+		GridBagConstraints proceedButtonC = new GridBagConstraints();
+
+		displayCustNameC.gridy = scale*150;
+		displayCustDOBC.gridy = scale*200;
+		displayCustRegTimeC.gridy = scale*250;
+		displayCustNameLabelC.gridy = scale*150;
+		displayCustDOBLabelC.gridy = scale*200;
+		displayCustRegTimeLabelC.gridy = scale*250;
+		proceedButtonC.gridy = scale*300;
+		displayCustNameC.anchor = GridBagConstraints.LINE_START;
+		displayCustDOBC.anchor = GridBagConstraints.LINE_START;
+		displayCustNameLabelC.anchor = GridBagConstraints.LINE_START;
+		displayCustDOBLabelC.anchor = GridBagConstraints.LINE_START;
+		displayCustRegTimeLabelC.anchor = GridBagConstraints.LINE_START;
+		proceedButtonC.anchor = GridBagConstraints.LINE_END;
+
+		displayCustNameLabel = new JLabel("Name: ");
+		displayCustDOBLabel = new JLabel("DOB: ");
+		displayCustRegTimeLabel = new JLabel("Register Timestamp: ");
+		displayCustName = new JTextField(name, 20);
+		displayCustDOB = new JTextField(dob, 20);
+		displayCustRegTime = new JTextField(regTime, 20);
+		goToAccountOptions = new JButton("Ok");
+		goToLogIn.addActionListener(this);
+		goToAccountOptions.addActionListener(this);
+
+		displayCustName.setEditable(false);
+		displayCustDOB.setEditable(false);
+		displayCustRegTime.setEditable(false);
+		
+		displayCustNameLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		displayCustDOBLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		displayCustRegTimeLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		displayCustName.setFont(new Font("Verdana", Font.PLAIN, 24));
+		displayCustDOB.setFont(new Font("Verdana", Font.PLAIN, 24));
+		displayCustRegTime.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToLogIn.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToAccountOptions.setFont(new Font("Verdana", Font.PLAIN, 24));
+
+		panel.setLayout(gbl);
+		panel.add(displayCustNameLabel, displayCustNameLabelC);
+		panel.add(displayCustDOBLabel, displayCustDOBLabelC);
+		panel.add(displayCustRegTimeLabel, displayCustRegTimeLabelC);
+		panel.add(displayCustName, displayCustNameC);
+		panel.add(displayCustDOB, displayCustDOBC);
+		panel.add(displayCustRegTime, displayCustRegTimeC);
+		panel.add(goToAccountOptions, proceedButtonC);
+
+		add(panel);
+		setVisible(true);
+	}
+
+	public void showPrevTransaction(float amt) {
+		int custID = cust.getID();
+		String custName = cust.getName();
+		super.setTitle("Bank Account: " + custName + " " + Integer.toString(custID));
+
+		panel.removeAll();
+		panel.repaint();
+		panel.revalidate();
+
+		GridBagLayout gbl = new GridBagLayout();
+		GridBagConstraints balanceC = new GridBagConstraints();
+		GridBagConstraints okC = new GridBagConstraints();
+
+		balanceC.gridy = scale*200;
+		okC.gridy = scale*250;
+		balanceC.anchor = GridBagConstraints.CENTER;
+		okC.anchor = GridBagConstraints.CENTER;
+
+		JLabel balanceLabel = new JLabel();
+		
+		if (amt == 0) {
+			balanceLabel.setText("No transaction history available.");
+		}
+		else if (amt > 0) {
+			balanceLabel.setText(String.format("Previous transaction: Deposit $%,.2f", amt));
+		}
+		else if (amt < 0) {
+			balanceLabel.setText(String.format("Previous transaction: Withdraw $%,.2f", (-1) * amt));
+		}
+		goToAccountOptions = new JButton("Ok");
+		goToAccountOptions.addActionListener(this);
+		
+		goToAccountOptions.setFont(new Font("Verdana", Font.PLAIN, 24));
+		balanceLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		
+		panel.setLayout(gbl);
+		panel.add(balanceLabel, balanceC);
+		panel.add(goToAccountOptions, okC);
+		add(panel);
+		setVisible(true);
+	}
+
+	
 	public void showDepositOne() {
 		int custID = cust.getID();
 		String custName = cust.getName();
@@ -374,23 +536,32 @@ public class BankSwing extends JFrame implements ActionListener {
 		GridBagConstraints amountLabelC = new GridBagConstraints();
 		GridBagConstraints amountC = new GridBagConstraints();
 		GridBagConstraints okC = new GridBagConstraints();
+		GridBagConstraints backC = new GridBagConstraints();
 
-		amountLabelC.gridy = 150;
-		amountC.gridy = 200;
-		okC.gridy = 250;
+		amountLabelC.gridy = scale*150;
+		amountC.gridy = scale*200;
+		backC.gridy = scale*250;
+		okC.gridy = scale*250;
 		amountLabelC.anchor = GridBagConstraints.LINE_START;
-		amountC.anchor = GridBagConstraints.LINE_START;
-		okC.anchor = GridBagConstraints.CENTER;
+		amountC.anchor = GridBagConstraints.CENTER;
 
 		depositAmountLabel = new JLabel("Amount to Deposit: ");
 		depositAmount = new JTextField(6);
 		goToDepositTwo = new JButton("Ok");
 		goToDepositTwo.addActionListener(this);
+		goToAccountOptions = new JButton("Back");
+		goToAccountOptions.addActionListener(this);
+
+		depositAmountLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		depositAmount.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToDepositTwo.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToAccountOptions.setFont(new Font("Verdana", Font.PLAIN, 24));
 
 		panel.setLayout(gbl);
 		panel.add(depositAmountLabel, amountLabelC);
 		panel.add(depositAmount, amountC);
-		panel.add(goToDepositTwo, okC);
+		panel.add(goToAccountOptions, backC);
+		panel.add(goToDepositTwo, okC);		
 		add(panel);
 		setVisible(true);
 	}
@@ -409,17 +580,21 @@ public class BankSwing extends JFrame implements ActionListener {
 		GridBagConstraints balanceC = new GridBagConstraints();
 		GridBagConstraints okC = new GridBagConstraints();
 
-		successC.gridy = 150;
-		balanceC.gridy = 200;
-		okC.gridy = 250;
+		successC.gridy = scale*150;
+		balanceC.gridy = scale*200;
+		okC.gridy = scale*250;
 		successC.anchor = GridBagConstraints.CENTER;
 		balanceC.anchor = GridBagConstraints.CENTER;
 		okC.anchor = GridBagConstraints.CENTER;
 
-		JLabel successLabel = new JLabel("Successfully deposited $" + depositAmount);
-		JLabel idLabel = new JLabel("Current balance: $" + bal);
+		JLabel successLabel = new JLabel(String.format("Successfully deposited $%,.2f", depositAmount));
+		JLabel idLabel = new JLabel(String.format("Current balance $%,.2f", bal));
 		goToAccountOptions = new JButton("Ok");
 		goToAccountOptions.addActionListener(this);
+
+		successLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		idLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToAccountOptions.setFont(new Font("Verdana", Font.PLAIN, 24));
 
 		panel.setLayout(gbl);
 		panel.add(successLabel, successC);
@@ -442,23 +617,32 @@ public class BankSwing extends JFrame implements ActionListener {
 		GridBagConstraints amountLabelC = new GridBagConstraints();
 		GridBagConstraints amountC = new GridBagConstraints();
 		GridBagConstraints okC = new GridBagConstraints();
+		GridBagConstraints backC = new GridBagConstraints();
 
-		amountLabelC.gridy = 150;
-		amountC.gridy = 200;
-		okC.gridy = 250;
+		amountLabelC.gridy = scale*150;
+		amountC.gridy = scale*200;
+		backC.gridy = scale*250;
+		okC.gridy = scale*250;
 		amountLabelC.anchor = GridBagConstraints.LINE_START;
-		amountC.anchor = GridBagConstraints.LINE_START;
-		okC.anchor = GridBagConstraints.CENTER;
+		amountC.anchor = GridBagConstraints.CENTER;
 
 		withdrawAmountLabel = new JLabel("Amount to Withdraw: ");
 		withdrawAmount = new JTextField(6);
 		goToWithdrawTwo = new JButton("Ok");
 		goToWithdrawTwo.addActionListener(this);
+		goToAccountOptions = new JButton("Back");
+		goToAccountOptions.addActionListener(this);
+
+		withdrawAmountLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		withdrawAmount.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToWithdrawTwo.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToAccountOptions.setFont(new Font("Verdana", Font.PLAIN, 24));
 
 		panel.setLayout(gbl);
 		panel.add(withdrawAmountLabel, amountLabelC);
 		panel.add(withdrawAmount, amountC);
-		panel.add(goToWithdrawTwo, okC);
+		panel.add(goToAccountOptions, backC);
+		panel.add(goToWithdrawTwo, okC);		
 		add(panel);
 		setVisible(true);
 	}
@@ -477,17 +661,21 @@ public class BankSwing extends JFrame implements ActionListener {
 		GridBagConstraints balanceC = new GridBagConstraints();
 		GridBagConstraints okC = new GridBagConstraints();
 
-		successC.gridy = 150;
-		balanceC.gridy = 200;
-		okC.gridy = 250;
+		successC.gridy = scale*150;
+		balanceC.gridy = scale*200;
+		okC.gridy = scale*250;
 		successC.anchor = GridBagConstraints.CENTER;
 		balanceC.anchor = GridBagConstraints.CENTER;
 		okC.anchor = GridBagConstraints.CENTER;
 
-		JLabel successLabel = new JLabel("Successfully withdrew $" + withdrawAmount);
-		JLabel idLabel = new JLabel("Current balance: $" + bal);
+		JLabel successLabel = new JLabel(String.format("Successfully withdrew $%,.2f", withdrawAmount));
+		JLabel idLabel = new JLabel(String.format("Current balance $%,.2f", bal));
 		goToAccountOptions = new JButton("Ok");
 		goToAccountOptions.addActionListener(this);
+
+		successLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		idLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToAccountOptions.setFont(new Font("Verdana", Font.PLAIN, 24));
 
 		panel.setLayout(gbl);
 		panel.add(successLabel, successC);
@@ -497,7 +685,7 @@ public class BankSwing extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
-	public void showBalance(Customer cust) {
+	public void showInterest() {
 		int custID = cust.getID();
 		String custName = cust.getName();
 		super.setTitle("Bank Account: " + custName + " " + Integer.toString(custID));
@@ -507,17 +695,104 @@ public class BankSwing extends JFrame implements ActionListener {
 		panel.revalidate();
 
 		GridBagLayout gbl = new GridBagLayout();
+		GridBagConstraints rateLabelC = new GridBagConstraints();
+		GridBagConstraints rateC = new GridBagConstraints();
+		GridBagConstraints yearsLabelC = new GridBagConstraints();
+		GridBagConstraints yearsC = new GridBagConstraints();
+		GridBagConstraints okC = new GridBagConstraints();
+		GridBagConstraints backC = new GridBagConstraints();
+
+		rateLabelC.gridy = scale*150;
+		rateC.gridy = scale*150;
+		yearsLabelC.gridy = scale*200;
+		yearsC.gridy = scale*200;
+		backC.gridy = scale*250;
+		okC.gridy = scale*250;
+		rateLabelC.anchor = GridBagConstraints.LINE_START;
+		rateC.anchor = GridBagConstraints.CENTER;
+
+		rateLabel = new JLabel("Annual interest rate (%): ");
+		rate = new JTextField(3);
+		yearsLabel = new JLabel("Number of years: ");
+		years = new JTextField(4);
+		goToInterestTwo = new JButton("Ok");
+		goToInterestTwo.addActionListener(this);
+		goToAccountOptions = new JButton("Back");
+		goToAccountOptions.addActionListener(this);
+
+		rateLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		rate.setFont(new Font("Verdana", Font.PLAIN, 24));
+		yearsLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		years.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToInterestTwo.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToAccountOptions.setFont(new Font("Verdana", Font.PLAIN, 24));
+
+		panel.setLayout(gbl);
+		panel.add(yearsLabel, yearsLabelC);
+		panel.add(rateLabel, rateLabelC);
+		panel.add(years, yearsC);
+		panel.add(rate, rateC);
+		panel.add(goToAccountOptions, backC);
+		panel.add(goToInterestTwo, okC);		
+		add(panel);
+		setVisible(true);
+	}
+	
+	public void showInterestTwo(float rate, int years) {
+		int custID = cust.getID();
+		String custName = cust.getName();
+		super.setTitle("Bank Account: " + custName + " " + Integer.toString(custID));
+
+		float amt = cust.account.calculateInterest(cust, rate, years);
+		panel.removeAll();
+		panel.repaint();
+		panel.revalidate();
+
+		GridBagLayout gbl = new GridBagLayout();
+		GridBagConstraints textC = new GridBagConstraints();
+		GridBagConstraints okC = new GridBagConstraints();
+
+		textC.gridy = scale*150;
+		okC.gridy = scale*250;
+		textC.anchor = GridBagConstraints.CENTER;
+		okC.anchor = GridBagConstraints.CENTER;
+
+		JLabel text = new JLabel(String.format("Annual %2.1f%% interest: \n Balance in %d years = $%,.2f", rate, years, amt));
+		goToAccountOptions = new JButton("Ok");
+		goToAccountOptions.addActionListener(this);
+
+		text.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToAccountOptions.setFont(new Font("Verdana", Font.PLAIN, 24));
+
+		panel.setLayout(gbl);
+		panel.add(text, textC);
+		panel.add(goToAccountOptions, okC);
+		add(panel);
+		setVisible(true);
+	}
+	
+	public void showBalance (String name, int id, float balance) {
+		super.setTitle("Bank Account: " + name + " " + Integer.toString(id));
+
+		panel.removeAll();
+		panel.repaint();
+		panel.revalidate();
+
+		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints balanceC = new GridBagConstraints();
 		GridBagConstraints okC = new GridBagConstraints();
 
-		balanceC.gridy = 200;
-		okC.gridy = 250;
+		balanceC.gridy = scale*200;
+		okC.gridy = scale*250;
 		balanceC.anchor = GridBagConstraints.CENTER;
 		okC.anchor = GridBagConstraints.CENTER;
 
-		JLabel balanceLabel = new JLabel("Current balance: $" + cust.getBalance());
+		JLabel balanceLabel = new JLabel(String.format("Current balance: $%,.2f", balance));
 		goToAccountOptions = new JButton("Ok");
 		goToAccountOptions.addActionListener(this);
+
+		balanceLabel.setFont(new Font("Verdana", Font.PLAIN, 24));
+		goToAccountOptions.setFont(new Font("Verdana", Font.PLAIN, 24));
 
 		panel.setLayout(gbl);
 		panel.add(balanceLabel, balanceC);
@@ -526,8 +801,7 @@ public class BankSwing extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
-	public void viewCustomers(ArrayList<Customer> customerList) {
-		//		JScrollPane scrollPane = new JScrollPane();
+	public void showCustomerList(ArrayList<Customer> customerList) {
 		panel.removeAll();
 		panel.repaint();
 		panel.revalidate();
@@ -536,17 +810,17 @@ public class BankSwing extends JFrame implements ActionListener {
 		GridBagConstraints customerTableC = new GridBagConstraints();
 		GridBagConstraints backButtonC = new GridBagConstraints();
 
-		customerTableC.gridy = 150;
-		backButtonC.gridy = 200;
+		customerTableC.gridy = scale*150;
+		backButtonC.gridy = scale*200;
 		customerTableC.anchor = GridBagConstraints.LINE_START;
 		backButtonC.anchor = GridBagConstraints.LINE_START;
 
 		String[] columnNames = {"Customer ID", "Customer Name"};
 		int customerCount = customerList.size();
 		String[][] data = new String[customerCount][customerCount];
-		
+
 		int row = 0;
-		
+
 		for(Customer cust : customerList) {
 			int custID = cust.getID();
 			String strCustID = String.valueOf(custID);
@@ -555,11 +829,23 @@ public class BankSwing extends JFrame implements ActionListener {
 			data[row][1] = strCustName;
 			row++;
 		}
-		
+
 
 		goToStart = new JButton("Back");
+		goToStart.setFont(new Font("Verdana", Font.PLAIN, 24));
+
 		goToStart.addActionListener(this);
-		JTable customerTable = new JTable(data, columnNames);
+		JTable customerTable = new JTable(data, columnNames) {
+			public boolean editCellAt(int row, int column, java.util.EventObject e) {
+	            return false;
+	         }
+		};
+
+		customerTable.setFont(new Font("Verdana", Font.PLAIN, 24));
+		customerTable.setCellSelectionEnabled(true);
+		customerTable.setRowHeight(scale * 20);
+		customerTable.setPreferredSize(new Dimension (400, customerCount * scale * 20));
+		
 		panel.setLayout(gbl);
 		panel.add(goToStart, backButtonC);
 		panel.add(customerTable, customerTableC);
@@ -577,8 +863,7 @@ public class BankSwing extends JFrame implements ActionListener {
 
 		else if (source == goToViewCustomers) {
 			System.out.println("viewing customers");
-			ArrayList<Customer> customerList = cs.viewCustomers();
-			viewCustomers(customerList);
+			showCustomerList(cs.viewCustomers());
 		}
 
 		else if (source == goToSignUpOne) {
@@ -593,7 +878,7 @@ public class BankSwing extends JFrame implements ActionListener {
 			String nameInput = customerName.getText();
 			String dobInput = customerDOB.getText();
 
-			if (dobInput.length() == 8) {
+			if (Customer.validateDate(dobInput)) {
 
 				int accTypeValue = 0;
 				if (standardAccButton.isSelected()) {
@@ -609,6 +894,9 @@ public class BankSwing extends JFrame implements ActionListener {
 				int id = cs.signUpCustomer(cust, nameInput, dobInput, accTypeValue);
 				showSignUpThree(id);
 			}
+			else {
+				System.out.println("invalid date");
+			}
 		}
 
 		else if (source == goToLogIn) {
@@ -618,9 +906,9 @@ public class BankSwing extends JFrame implements ActionListener {
 		else if (source == logInOkButton) {
 			try {
 				int idInput = Integer.parseInt(customerID.getText());
-				boolean userValid = cs.logInCustomer(cust, idInput);
-				if(userValid) {
-					showCustomerDetails(cust);
+
+				if(cs.searchCustomer(cust, idInput)) {
+					showCustomerDetails(cust.getName(), cust.getDateOfBirth(), cust.getRegTime());
 				}	
 			}
 			catch(NumberFormatException nfe) {
@@ -632,28 +920,37 @@ public class BankSwing extends JFrame implements ActionListener {
 		}
 
 		else if (source == goToAccountOptions) {
-			showAccountOptions(cust);
+			showAccountOptions(cust.getName(), cust.getID());
 		}
 
 		else if (source == accOptionsOkButton) {
 			if (makeDeposit.isSelected()) {
 				showDepositOne();
 			}
-			if(makeWithdrawal.isSelected()) {
+			else if(makeWithdrawal.isSelected()) {
 				showWithdrawalOne();
 			}
-			if (checkBalance.isSelected()) {
-				showBalance(cust);
+			else if (checkBalance.isSelected()) {
+				showBalance(cust.getName(), cust.getID(), cust.getBalance());
+			}
+			else if (accInfo.isSelected()) {
+				showAccountInfo(cust.getName(), cust.getDateOfBirth(), cust.getRegTime());
+			}
+			else if (calcInterest.isSelected()) {
+				showInterest();
+			}
+			else if (prevTransaction.isSelected()) {
+				showPrevTransaction(cust.account.getPreviousTransaction(cust));
 			}
 		}
 
 		else if (source == goToDepositTwo) {
 			try {
-				String strDep = depositAmount.getText();
-				float intDep = Float.parseFloat(strDep);
-				cust.m_account.makeTransaction(cust, intDep);
-				float bal = cust.getBalance();
-				showDepositTwo(intDep, bal);
+				float amt = Float.parseFloat(depositAmount.getText());
+				System.out.println(amt);
+				cust.account.makeTransaction(cust, amt);
+				System.out.println(cust.getBalance());
+				showDepositTwo(amt, cust.getBalance());
 			}
 
 			catch (NumberFormatException e) {
@@ -663,16 +960,26 @@ public class BankSwing extends JFrame implements ActionListener {
 
 		else if (source == goToWithdrawTwo) {
 			try {
-				String strWithdraw = withdrawAmount.getText();
-				float intWithdraw = Float.parseFloat(strWithdraw);
-				cust.m_account.makeTransaction(cust, intWithdraw * (-1));
-				float bal = cust.getBalance();
-				showWithdrawalTwo(intWithdraw, bal);
+				float amt = Float.parseFloat(withdrawAmount.getText());
+				if (amt < cust.getBalance()) {
+					cust.account.makeTransaction(cust, amt * (-1));
+					showWithdrawalTwo(amt, cust.getBalance());
+				}
 			}
 			catch (NumberFormatException e) {
 
 			}
+		}
+		
+		else if (source == goToInterestTwo) {
+			try {
+				float interestRate = Float.parseFloat(rate.getText());
+				int interestYears = Integer.parseInt(years.getText());
+				showInterestTwo(interestRate, interestYears);
+			}
+			catch (NumberFormatException e) {
 
+			}
 		}
 	}
 
@@ -689,10 +996,10 @@ public class BankSwing extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
+  
 		BankSwing bankSwing = new BankSwing();
 		CustomerService cs = new CustomerService();
 		bankSwing.startPage();
-		//		ArrayList<Customer> customerList = cs.viewCustomers();
-		//		bank_swing.viewCustomers(customerList);
 	}
 }
+

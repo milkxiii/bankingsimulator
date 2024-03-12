@@ -44,26 +44,26 @@ public class PersistenceManager {
 			prep2.setInt(1, acc.getAccountID());
 			prep2.setInt(2, acc.getCategory());
 			prep2.setFloat(3, acc.getBalance());
-			prep2.setString(4, null);
+			prep2.setFloat(4, 0);
 			prep2.executeUpdate();
 			prep2.close();
 			conn.close();
 		} catch (SQLException sqe) {
-			System.out.println("Account SQL Error: " + sqe.getMessage());
+			System.out.println("Customer SQL Error: " + sqe.getMessage());
 
 		}
 	}
 
-	public void updateAccBalance(float balanceDifference, int idInput) {
+	public void updateAccBalance(float amt, int idInput) {
 		System.out.println(idInput);
-		float newBal = balanceDifference + fetchAccBal(idInput);
+		float newBal = amt + fetchAccBal(idInput);
 		
 		try (Connection conn = DriverManager.getConnection(connectionUrl);) {
 
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			PreparedStatement prep2 = conn.prepareStatement(
 					"UPDATE ACCOUNT " +
-					"SET BALANCE = " + + newBal +
+					"SET BALANCE = " + newBal + ", TRANSACTIONS = " + amt +
 					"WHERE ACCOUNTID = " + idInput);
 			prep2.execute();
 		} catch (SQLException sqe) {
@@ -101,8 +101,8 @@ public class PersistenceManager {
 		return verifyCustomer;
 	}
 
-	public int fetchAccBal(int inputID) {
-		int currentBal = 0;
+	public float fetchAccBal(int inputID) {
+		float currentBal = 0;
 		try (Connection conn = DriverManager.getConnection(connectionUrl);) {
 			Statement st = conn.createStatement();
 			ResultSet rec = st.executeQuery(
@@ -111,7 +111,7 @@ public class PersistenceManager {
 
 			while (rec.next()) {
 				if (inputID == rec.getInt(1)){
-					currentBal = rec.getInt(2);
+					currentBal = rec.getFloat(2);
 				}
 			}
 			rec.close();
@@ -123,6 +123,30 @@ public class PersistenceManager {
 			+ e.getMessage());
 		}
 		return currentBal;
+	}
+	
+	public float fetchPrevTransaction(int inputID) {
+		float amt = 0;
+		try (Connection conn = DriverManager.getConnection(connectionUrl);) {
+			Statement st = conn.createStatement();
+			ResultSet rec = st.executeQuery(
+					"select ACCOUNTID, TRANSACTIONS " +
+					"from ACCOUNT");
+
+			while (rec.next()) {
+				if (inputID == rec.getInt(1)){
+					amt = rec.getFloat(2);
+				}
+			}
+			rec.close();
+		} catch (SQLException s) {
+			System.out.println("SQL Error: " + s.toString() + " "
+					+ s.getErrorCode() + " " + s.getSQLState());
+		} catch (Exception e) {
+			System.out.println("Error: " + e.toString()
+			+ e.getMessage());
+		}
+		return amt;
 	}
 
 	public ArrayList<Customer> viewCustomerList() {	
