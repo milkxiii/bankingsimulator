@@ -25,6 +25,9 @@ The banking application will be used by tellers in the branch to manage daily cu
 - Start Derby DB and make accessible from within Eclipse through JDBC
 - Create table Customer and Account, update tables with JDBC based code in PersistanceManager
 
+## Conceptual Diagram
+![image](https://github.com/milkxiii/bankingsimulator/assets/104285627/8e95ee96-9433-49b3-9fa4-7843372448f2)
+
 ## Use Case Realization
 ### Class Diagram
 ![image](https://github.com/milkxiii/bankingsimulator/assets/104285627/a6356d03-4676-4ff8-8f69-170666a58446)
